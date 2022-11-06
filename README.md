@@ -1,66 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Setup
+This application was set up using Valet and a pre-installed version of MySQL. 
+To get it up and running, please follow the steps below: 
+```bash
+# Move to the directory you just cloned
+cd ticket-processor
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Then run:
+composer install
 
-## About Laravel
+npm install # make sure you're using node v18
+npm run dev
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Create a link to run the application, e.g. ticket-processor.test
+# If it doesn't work straight away, please add the created link uri to your hosts file
+valet link
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# If you'd like to confirm what link has been create, you can run the command below
+valet links
+```
+If you used the above, you should be able to access http://ticket-processor.test/
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### Database
+- Access to the MySql database:
+  - Create a database and update the environment variables on your local .env file 
+  - Host: `127.0.0.1` or `localhost` (depends on your OS)
+  - Port: `3306`
+  - Username: `username`
+  - Password: `password`
+  - Database: `laravel`
 
-## Learning Laravel
+To finish setting up the application, run the command below:
+```bash
+php artisan migrate --seed
+```
+***********
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## General
+### Default Seeded Users
+```
+Username: user@example.com
+Password: password
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Username: user2@example.com
+Password: password 
+```
+### Features
+* (Artisan Command) Cronjob to create 1 ticket every minute
+* (Artisan Command) Cronjob to process 5 tickets every 5 minutes
+* Register User
+* Login page
+* Home page 
+  * Lists all tickets created by the logged-in user (not paginated)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### Commands
+```bash
+# Creates 1 ticket with dummy data for each execution
+php artisan cron:generate-ticket
 
-## Laravel Sponsors
+# Processes 5 tickets each execution
+php artisan cron:process-tickets
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+#### Run Scheduled Jobs
+To run Laravel Schedule locally, run the command below:
+```bash
+php artisan schedule:work
+```
+To run Laravel Schedule on a server, add the line below to the crontab:
+```bash
+# Make sure you set your project path correctly
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
 
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Run tests
+```bash
+# Make sure you have `npm run dev` running
+php artisan test --coverage
+```

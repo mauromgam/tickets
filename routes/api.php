@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\TicketApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('login.proxy')
+    ->post('user/login', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
+
+Route::get('/tickets/open', [TicketApiController::class, 'getOpenTickets'])
+    ->name('open-tickets');
+
+Route::get('/tickets/closed', [TicketApiController::class, 'getClosedTickets'])
+    ->name('closed-tickets');
+
+Route::get('/users/{email}/tickets', [TicketApiController::class, 'getTicketsByEmail'])
+    ->name('users-tickets');
+
+Route::get('/stats', [TicketApiController::class, 'getStats'])
+    ->name('stats');
