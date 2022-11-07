@@ -47,12 +47,29 @@ Password: password
 ### Features
 * (Artisan Command) Cronjob to create 1 ticket every minute
 * (Artisan Command) Cronjob to process 5 tickets every 5 minutes
-* Register User
-* Login page
-* Home page 
-  * Lists all tickets created by the logged-in user (not paginated)
 
-#### Commands
+### URLs and Endpoints
+```bash
+GET|HEAD  api/stats ........................................ stats › Api\TicketApiController@getStats
+GET|HEAD  api/tickets/closed .............. closed-tickets › Api\TicketApiController@getClosedTickets
+GET|HEAD  api/tickets/open .................... open-tickets › Api\TicketApiController@getOpenTickets
+POST      api/user/login ........................ Laravel\Passport › AccessTokenController@issueToken
+GET|HEAD  api/users/{email}/tickets ....... users-tickets › Api\TicketApiController@getTicketsByEmail
+GET|HEAD  home .......................................................... home › HomeController@index
+GET|HEAD  login .......................................... login › Auth\LoginController@showLoginForm
+POST      login .......................................................... Auth\LoginController@login
+POST      logout ............................................... logout › Auth\LoginController@logout
+GET|HEAD  password/confirm ........ password.confirm › Auth\ConfirmPasswordController@showConfirmForm
+POST      password/confirm ................................... Auth\ConfirmPasswordController@confirm
+POST      password/email .......... password.email › Auth\ForgotPasswordController@sendResetLinkEmail
+GET|HEAD  password/reset ....... password.request › Auth\ForgotPasswordController@showLinkRequestForm
+POST      password/reset ....................... password.update › Auth\ResetPasswordController@reset
+GET|HEAD  password/reset/{token} ........ password.reset › Auth\ResetPasswordController@showResetForm
+GET|HEAD  register .......................... register › Auth\RegisterController@showRegistrationForm
+POST      register ................................................. Auth\RegisterController@register
+```
+
+### Commands
 ```bash
 # Creates 1 ticket with dummy data for each execution
 php artisan cron:generate-ticket
@@ -61,7 +78,7 @@ php artisan cron:generate-ticket
 php artisan cron:process-tickets
 ```
 
-#### Run Scheduled Jobs
+### Run Scheduled Jobs
 To run Laravel Schedule locally, run the command below:
 ```bash
 php artisan schedule:work
@@ -72,7 +89,7 @@ To run Laravel Schedule on a server, add the line below to the crontab:
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
-#### Run tests
+### Run tests
 ```bash
 # Make sure you have `npm run dev` running
 php artisan test --coverage
