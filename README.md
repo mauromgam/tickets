@@ -2,8 +2,11 @@
 This application was set up using Valet and a pre-installed version of MySQL. 
 To get it up and running, please follow the steps below: 
 ```bash
+# Clone Git repository
+git clone https://github.com/mauromgam/tickets.git
+
 # Move to the directory you just cloned
-cd ticket-processor
+cd tickets
 
 # Then run:
 composer install
@@ -11,14 +14,14 @@ composer install
 npm install # make sure you're using node v18
 npm run dev
 
-# Create a link to run the application, e.g. ticket-processor.test
+# Create a link to run the application, e.g. tickets.test
 # If it doesn't work straight away, please add the created link uri to your hosts file
 valet link
 
 # If you'd like to confirm what link has been create, you can run the command below
 valet links
 ```
-If you used the above, you should be able to access http://ticket-processor.test/
+If you used the above, you should be able to access http://tickets.test/
 
 #### Database
 - Access to the MySql database:
